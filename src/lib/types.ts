@@ -69,6 +69,7 @@ export interface ActionCard {
   why_head: string
   why_rest: string
   affected: string
+  rank: string
   helps: boolean
   action_id: string
   action_label: string

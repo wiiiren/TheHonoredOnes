@@ -77,6 +77,34 @@ def test_apply_changes_the_day():
     assert closed["mode"] == "closed"
 
 
+def test_card_explains_its_rank_only_when_alerts_compete():
+    ranked = alone = 0
+    for day in view.DEMO_DAYS:
+        for clock in range(view.OPEN, view.CLOSE, view.TICK):
+            body = client.get("/api/py/screen", params={"day": day, "clock": clock}).json()
+            if body["mode"] != "alert":
+                continue
+            rank = body["card"]["rank"]
+            if body["watching"]:
+                ranked += 1
+                assert rank.startswith(f"Ranked first of {len(body['watching']) + 1}: "), rank
+            else:
+                alone += 1
+                assert rank == ""
+    assert ranked and alone
+
+
+def test_effect_states_waiting_saved_across_the_clinic():
+    action = {"action_id": "open_reserve_room", "label": "Open the reserve room",
+              "wait_saved_min": 21.0, "donor_station": None, "donor_wait_added_min": 0.0,
+              "total_wait_saved_patient_min": 290.0, "bottleneck_after": None}
+    fc = {s: {60: {"breach_prob": 0.0}} for s in wording.STATIONS}
+    sentence = wording.effect_sentence(action, "consultation", fc, view.CFG)
+    assert "saving about 5 patient-hours of waiting across the clinic in that hour." in sentence
+    assert wording.saved_phrase(40) == "40 patient-minutes"
+    assert wording.saved_phrase(0) == ""
+
+
 def test_card_acknowledges_a_running_move():
     first = None
     for clock in range(view.OPEN, view.CLOSE, view.TICK):

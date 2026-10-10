@@ -167,10 +167,35 @@ def action_helps(action):
     return bool(action) and whole(action["wait_saved_min"]) >= 1
 
 
+def saved_phrase(patient_min):
+    """'5 patient-hours' or '40 patient-minutes' for waiting saved across the clinic."""
+    if not patient_min or patient_min < 1:
+        return ""
+    if patient_min < 60:
+        return f"{whole(patient_min)} patient-minutes"
+    hours = whole(patient_min / 60)
+    return f"{hours} patient-hour{'' if hours == 1 else 's'}"
+
+
+ORDINALS = ["first", "second", "third", "fourth", "fifth"]
+
+
+def rank_sentence(alert, rank, total):
+    """Why this alert sits where it does: the terms of the engine's priority score."""
+    over = whole((alert.get("facts") or {}).get("minutes_over_limit", 0))
+    excess = f"about {over} minute{'' if over == 1 else 's'} over the limit" if over >= 1 \
+        else "just reaching the limit"
+    return (f"Ranked {ORDINALS[rank]} of {total}: {whole(alert['patients_affected'])} patients "
+            f"affected, {chance(alert['breach_prob'])}, {excess}.")
+
+
 def effect_sentence(action, station, fc, cfg):
     gerund = ACTION_GERUND.get(action["action_id"], action["label"].rstrip("."))
-    parts = [f"{gerund} for an hour cuts the {station} wait by about "
-             f"{whole(action['wait_saved_min'])} minutes."]
+    first = (f"{gerund} for an hour cuts the {station} wait by about "
+             f"{whole(action['wait_saved_min'])} minutes")
+    saved = saved_phrase(action.get("total_wait_saved_patient_min"))
+    parts = [f"{first}, saving about {saved} of waiting across the clinic in that hour."
+             if saved else f"{first}."]
     donor = action.get("donor_station")
     if donor:
         added = whole(action["donor_wait_added_min"])

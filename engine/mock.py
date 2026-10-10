@@ -84,7 +84,7 @@ def alerts(state):
          "top_action": recommend(state, "consultation")[0],
          "facts": {"staff_on": 3, "staff_roster": 4, "staff_type": "doctors",
                    "arrival_ratio": 1.1, "service_min_now": 10.4, "service_min_usual": 10.0,
-                   "wait_now_min": 23.3, "wait_expected_min": 41.0}},
+                   "wait_now_min": 23.3, "wait_expected_min": 41.0, "minutes_over_limit": 11.0}},
         {"station": "pharmacy", "breach_prob": 0.43, "minutes_to_breach": 50,
          "patients_affected": 14, "priority": 21.7,
          "cause": "demand_surge",
@@ -92,7 +92,7 @@ def alerts(state):
          "top_action": None,
          "facts": {"staff_on": 2, "staff_roster": 2, "staff_type": "pharmacists",
                    "arrival_ratio": 1.7, "service_min_now": 7.3, "service_min_usual": 7.0,
-                   "wait_now_min": 14.0, "wait_expected_min": 24.5}},
+                   "wait_now_min": 14.0, "wait_expected_min": 24.5, "minutes_over_limit": 1.5}},
     ]   # highest priority first; empty when calm
 
 

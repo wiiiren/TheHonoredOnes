@@ -186,7 +186,7 @@ def alerts(state):
         st = state["stations"][name]
         cause = episode_cause(tracked[si])
         moves = recommend(state, name)
-        score, patients = priority(proj, state, name)
+        score, patients, over = priority(proj, state, name)
         explained = sim.action_scale(state["actions"], si, clock, clock + 1, P)
         out.append({
             "station": name,
@@ -206,6 +206,7 @@ def alerts(state):
                 "service_min_usual": round(P.service_min[si] * explained, 1),
                 "wait_now_min": st["wait_now_min"],
                 "wait_expected_min": round(float(np.median(proj.W[:, -1, si])), 1),
+                "minutes_over_limit": round(over, 1),
             },
         })
     out.sort(key=lambda a: (a["priority"], a["breach_prob"]), reverse=True)

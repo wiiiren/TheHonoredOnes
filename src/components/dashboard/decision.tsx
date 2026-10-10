@@ -153,6 +153,7 @@ function ActionCard({ card, onApply, applying }: { card: Card; onApply: () => vo
           {card.what} <strong className="font-semibold text-foreground">{card.why_head}</strong> {card.why_rest}{" "}
           {card.affected}
         </p>
+        {card.rank && <p className="mt-2 text-[13.5px] font-medium text-muted-foreground">{card.rank}</p>}
 
         {card.helps ? (
           <div className="mt-5 grid gap-4 md:grid-cols-[auto_1fr]">

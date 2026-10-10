@@ -47,13 +47,14 @@ def diagnose(state, station):
 
 
 def priority(proj, state, station) -> tuple:
-    """(priority, patients_affected) for a station.
+    """(priority, patients_affected, minutes_over_limit) for a station.
 
     priority = chance of passing the limit x patients affected x expected minutes over the
-    limit x station weight. It only orders alerts and is never shown as a number.
+    limit x station weight. It only orders alerts and is never shown as a number; the
+    card shows the terms behind it.
     """
     P = params()
     si = STATIONS.index(station)
     patients = state["stations"][station]["waiting"] + float(proj.joined[:, si].mean())
     over = float(np.maximum(proj.W[:, :, si].max(axis=1) - P.limit, 0.0).mean())
-    return proj.prob(si) * patients * over * P.weight[si], int(round(patients))
+    return proj.prob(si) * patients * over * P.weight[si], int(round(patients)), over

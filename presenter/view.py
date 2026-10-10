@@ -150,6 +150,7 @@ class ActionCard:
     why_head: str = ""
     why_rest: str = ""
     affected: str = ""
+    rank: str = ""              # why this alert is ranked where it is; empty when it is the only one
     helps: bool = False
     action_id: str = ""
     action_label: str = ""
@@ -340,6 +341,8 @@ def build(day, clock, actions, selected=""):
     if focus is not None:
         screen.mode = "alert"
         screen.card = _action_card(focus, state, fc, _recommend(day, clock, actions, focus_station))
+        if len(alert_list) > 1:
+            screen.card.rank = w.rank_sentence(focus, alert_list.index(focus), len(alert_list))
     else:
         watching = [s for s in w.STATIONS if statuses[s] == "watch"]
         if watching:
