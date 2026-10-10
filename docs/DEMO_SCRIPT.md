@@ -1,6 +1,6 @@
 # Demo script
 
-A 3-minute live demo of the Service Bottleneck Predictor, followed by answers to likely questions. Every time, number and sentence below is what the live app shows today on https://bottleneck-predictor.vercel.app/. If the engine, the demo days or the results change, re-check them.
+A 3-minute live demo of the Services Bottleneck Predictor, followed by answers to likely questions. Every time, number and sentence below is what the live app shows today on https://bottleneck-predictor.vercel.app/. If the engine, the demo days or the results change, re-check them.
 
 ## The story in one line
 

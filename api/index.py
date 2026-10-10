@@ -28,7 +28,7 @@ from presenter import view  # noqa: E402
 log = logging.getLogger("api")
 
 app = FastAPI(
-    title="Bottleneck Predictor API",
+    title="Services Bottleneck Predictor API",
     docs_url="/api/py/docs",
     openapi_url="/api/py/openapi.json",
 )

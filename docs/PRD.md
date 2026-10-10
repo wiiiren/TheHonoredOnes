@@ -1,4 +1,4 @@
-# Product Requirements Document: Service Bottleneck Predictor
+# Product Requirements Document: Services Bottleneck Predictor
 
 **Prototype use case:** Hospital outpatient services
 **Hackathon track:** Track 1, Predictive Model
@@ -9,7 +9,7 @@
 
 ## 1. Summary
 
-The Service Bottleneck Predictor tells an outpatient shift supervisor which station will overload in the next 15 to 60 minutes, why, and which staff move prevents it.
+The Services Bottleneck Predictor tells an outpatient shift supervisor which station will overload in the next 15 to 60 minutes, why, and which staff move prevents it.
 
 One-line pitch: *"We tell the outpatient supervisor which station will overload next, why, and which staff move prevents it."*
 

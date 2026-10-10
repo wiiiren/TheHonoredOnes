@@ -11,7 +11,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Bottleneck Predictor",
+  title: "Services Bottleneck Predictor",
   description:
     "Which outpatient station will pass the 30-minute limit in the next hour, why, and the staff move that prevents it.",
 }

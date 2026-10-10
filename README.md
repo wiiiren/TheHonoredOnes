@@ -1,4 +1,4 @@
-# Service Bottleneck Predictor
+# Services Bottleneck Predictor
 
 **Tells an outpatient shift supervisor which station will overload next, why, and which staff move prevents it.**
 

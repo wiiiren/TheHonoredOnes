@@ -49,7 +49,7 @@ export function Dashboard() {
           </>
         ) : (
           <>
-            <h1 className="sr-only">Bottleneck Predictor: which outpatient station will pass the {meta.limit}-minute limit next</h1>
+            <h1 className="sr-only">Services Bottleneck Predictor: which outpatient station will pass the {meta.limit}-minute limit next</h1>
             <ReplayControls r={r} />
             <PatientFlow stations={r.screen?.stations ?? null} limit={meta.limit} />
 

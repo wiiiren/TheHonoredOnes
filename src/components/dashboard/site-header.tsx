@@ -24,8 +24,8 @@ export function SiteHeader({ clock, playing, closed, ready }: {
             <Activity className="size-[18px]" strokeWidth={2.4} />
           </div>
           <div className="leading-tight">
-            <div className="text-[15px] font-semibold tracking-tight">Bottleneck Predictor</div>
-            <div className="hidden text-xs text-muted-foreground sm:block">Outpatient services</div>
+            <div className="text-[15px] font-semibold tracking-tight">Services Bottleneck Predictor</div>
+            <div className="hidden text-xs text-muted-foreground sm:block">Hospital Outpatient Services</div>
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-# Design Document: Service Bottleneck Predictor
+# Design Document: Services Bottleneck Predictor
 
 **Prototype use case:** Hospital outpatient services
 **Status:** Draft v1, 10 October 2026

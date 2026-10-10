@@ -1,4 +1,4 @@
-# Technical Requirements Document: Service Bottleneck Predictor
+# Technical Requirements Document: Services Bottleneck Predictor
 
 **Prototype use case:** Hospital outpatient services
 **Status:** Draft v1, 10 October 2026
