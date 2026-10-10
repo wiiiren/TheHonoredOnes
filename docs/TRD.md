@@ -124,6 +124,8 @@ allowed_moves:   # assumption: a moved staff member works at full speed
      label: "Send the float nurse to laboratory sample-taking"}
   - {id: open_reserve_room, from: float, to: consultation,
      label: "Open the reserve room with the on-call doctor"}
+  - {id: open_third_desk, from: float, to: registration,
+     label: "Open a third registration desk with the float clerk"}
   - {id: fast_track_pharmacy, station: pharmacy, service_scale: 0.8,
      label: "Fast-track repeat prescriptions at pharmacy"}
 ```
@@ -468,7 +470,7 @@ Constraints: memory on the free tier is capped and limits can change without not
 | `forecast()` | Under 1 second | Drop to 20 runs |
 | One replay tick, all calls | Under 2 seconds | Precompute the four demo days into `data/demo_cache.json` |
 
-Each alert costs about eight forecast-sized runs per tick: one forecast, three for cause, four for moves.
+Each alert costs about nine forecast-sized runs per tick: one forecast, three for cause, five for moves.
 
 ## 14. Known limitations
 

@@ -31,6 +31,8 @@ OPEN, CLOSE = w.minutes_of(CFG["open"]), w.minutes_of(CFG["close"])
 TICK = CFG.get("tick_min", 5)
 LIMIT = CFG["wait_limit_min"]
 CLEAR_AT = CFG["alert"]["clear_at"]
+MOVES = {m["id"]: m for m in CFG["allowed_moves"]}
+MOVE_MIN = CFG.get("action_duration_min", 60)
 DATA_MISSING = "Demo data could not be loaded. Choose another day or press Reset."
 USES_MOCK = getattr(api.get_state, "__module__", "") == "engine.mock"
 
@@ -139,6 +141,7 @@ class WhatIf:
 class ActionCard:
     station: str = ""
     station_name: str = ""
+    label: str = "Do this now"  # "Move in progress" while an applied move is running here
     title: str = ""
     tone: str = "urgent"        # urgent | warn
     deadline: str = ""
@@ -151,6 +154,7 @@ class ActionCard:
     action_id: str = ""
     action_label: str = ""
     effect: str = ""
+    no_move_title: str = "No move helps"
     no_move: str = ""
     causes: list[CauseBar] = dataclasses.field(default_factory=list)
     causes_note: str = ""
@@ -247,6 +251,19 @@ def _cause_bars(alert):
             for k in keys]
 
 
+def _running_move(state, station):
+    """(action_id, start) of the latest applied move still running at this station, or None."""
+    clock = state["clock"]
+    running = [(start, action_id) for action_id, start in state.get("actions", ())
+               if start <= clock < start + MOVE_MIN
+               and station in (MOVES.get(action_id, {}).get("to"),
+                               MOVES.get(action_id, {}).get("station"))]
+    if not running:
+        return None
+    start, action_id = max(running)
+    return action_id, start
+
+
 def _action_card(alert, state, fc, recs):
     clock = state["clock"]
     station = alert["station"]
@@ -254,11 +271,24 @@ def _action_card(alert, state, fc, recs):
     helps = w.action_helps(action)
     head, rest = w.split_cause(w.why_sentence(alert, state, CFG))
     others = [r for r in recs if helps and r["action_id"] != action["action_id"]]
+    # An applied move is already working here and nothing more helps: say so, rather
+    # than telling the supervisor that no move helps.
+    running = None if helps else _running_move(state, station)
+    if running:
+        label, title = "Move in progress", w.ACTION_KEEP.get(running[0], "Keep the applied move in place.")
+        deadline = f"Running until {w.hhmm(running[1] + MOVE_MIN)}"
+        no_move_title = "Already applied"
+        no_move = w.running_sentence(alert, fc, running[1], running[1] + MOVE_MIN)
+    else:
+        label, title = "Do this now", (action["label"] + ".") if helps else "Warn waiting patients."
+        deadline = w.deadline(alert)
+        no_move_title = "No move helps"
+        no_move = "" if helps else w.no_move_sentence(alert, fc)
     return ActionCard(
         station=station, station_name=w.name(station),
-        title=(action["label"] + ".") if helps else "Warn waiting patients.",
+        label=label, title=title,
         tone="urgent" if helps else "warn",
-        deadline=w.deadline(alert),
+        deadline=deadline,
         chance=w.chance_pct(alert["breach_prob"]),
         what=w.what_sentence(alert, clock, LIMIT),
         why_head=head, why_rest=rest,
@@ -267,7 +297,7 @@ def _action_card(alert, state, fc, recs):
         action_id=action["action_id"] if helps else "",
         action_label=action["label"] if helps else "",
         effect=w.effect_sentence(action, station, fc, CFG) if helps else "",
-        no_move="" if helps else w.no_move_sentence(alert, fc),
+        no_move_title=no_move_title, no_move=no_move,
         causes=_cause_bars(alert),
         causes_note=w.bars_sentence(alert),
         what_ifs=[WhatIf(label=r["label"], saved=w.whole(r["wait_saved_min"]),

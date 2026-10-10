@@ -62,6 +62,8 @@ allowed_moves:   # assumption: a moved staff member works at full speed
      label: "Send the float nurse to laboratory sample-taking"}
   - {id: open_reserve_room, from: float, to: consultation,
      label: "Open the reserve room with the on-call doctor"}
+  - {id: open_third_desk, from: float, to: registration,
+     label: "Open a third registration desk with the float clerk"}
   - {id: fast_track_pharmacy, station: pharmacy, service_scale: 0.8,
      label: "Fast-track repeat prescriptions at pharmacy"}
 

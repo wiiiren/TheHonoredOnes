@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-10T16:45:06+00:00",
+  "generated_at": "2026-10-10T17:37:38+00:00",
   "data_mode": "calibrated",
   "test_days": 20,
   "wait_limit_min": 30.0,
@@ -536,19 +536,19 @@
       "patients": 2066
     },
     "reactive": {
-      "share_over_30": 0.0261,
-      "total_wait_hours": 396.0,
-      "wait_hours_per_day": 19.8,
-      "moves": 12,
-      "moves_per_day": 0.6,
+      "share_over_30": 0.0102,
+      "total_wait_hours": 367.1,
+      "wait_hours_per_day": 18.36,
+      "moves": 16,
+      "moves_per_day": 0.8,
       "patients": 2066
     },
     "tool": {
-      "share_over_30": 0.0266,
-      "total_wait_hours": 358.8,
-      "wait_hours_per_day": 17.94,
-      "moves": 17,
-      "moves_per_day": 0.85,
+      "share_over_30": 0.0068,
+      "total_wait_hours": 328.7,
+      "wait_hours_per_day": 16.44,
+      "moves": 21,
+      "moves_per_day": 1.05,
       "patients": 2066
     },
     "tool_vs_reactive": {
@@ -558,10 +558,10 @@
     }
   },
   "impact": {
-    "wait_hours_saved_per_day_vs_reactive": 1.86,
-    "wait_hours_saved_per_day_vs_fixed": 3.34,
+    "wait_hours_saved_per_day_vs_reactive": 1.92,
+    "wait_hours_saved_per_day_vs_fixed": 4.84,
     "clinic_days_per_year_assumed": 300,
-    "wait_hours_saved_per_year_vs_reactive": 558,
+    "wait_hours_saved_per_year_vs_reactive": 576,
     "note": "Per-day figures are averages over the 20 test days, half of which carry an injected disruption; a real clinic's mix of good and bad days will differ."
   },
   "assumptions": [
@@ -571,13 +571,13 @@
     "Staff numbers are assumed: 2 at registration, 4 at consultation, 1 at laboratory, 1 at imaging, 2 at pharmacy.",
     "Average service times are assumed: registration 4 min, consultation 10 min, laboratory 6 min, imaging 12 min, pharmacy 7 min.",
     "65% of patients are assumed to visit the pharmacy.",
-    "The four allowed moves are assumed, and a moved staff member works at full speed at once.",
-    "Each move lasts 60 minutes. The float nurse and on-call doctor are assumed available.",
+    "The five allowed moves are assumed, and a moved staff member works at full speed at once.",
+    "Each move lasts 60 minutes. The float nurse, float clerk and on-call doctor are assumed available.",
     "Patients do not leave the queue, so the cost of leaving without care is not measured.",
     "A breach is the wait estimate (patients waiting x current service time / staff) passing 30 minutes.",
     "Disruptions are injected in the busy part of the day (starting 09:30 to 11:30).",
     "The reactive supervisor moves staff only after a wait has passed the limit, and does not take a clerk from a registration desk that is more than half way to the limit.",
     "Station weights used only to rank alerts: {'registration': 1.0, 'consultation': 1.5, 'laboratory': 1.0, 'imaging': 1.0, 'pharmacy': 1.2}."
   ],
-  "runtime_seconds": 74.4
+  "runtime_seconds": 74.3
 }

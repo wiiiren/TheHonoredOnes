@@ -29,7 +29,17 @@ ACTION_GERUND = {
     "clerk_to_pharmacy": "Moving a registration clerk to the pharmacy counter",
     "nurse_to_lab": "Sending the float nurse to laboratory sample-taking",
     "open_reserve_room": "Opening the reserve room",
+    "open_third_desk": "Opening a third registration desk",
     "fast_track_pharmacy": "Fast-tracking repeat prescriptions",
+}
+
+# Each allowed move as an instruction to keep it going, for the card while it is running.
+ACTION_KEEP = {
+    "clerk_to_pharmacy": "Keep the clerk at the pharmacy counter.",
+    "nurse_to_lab": "Keep the float nurse on laboratory sample-taking.",
+    "open_reserve_room": "Keep the reserve room open.",
+    "open_third_desk": "Keep the third registration desk open.",
+    "fast_track_pharmacy": "Keep fast-tracking repeat prescriptions.",
 }
 
 STATUS_WORD = {"ok": "OK", "watch": "Watch", "breach": "Will breach", "over": "Over limit"}
@@ -186,6 +196,13 @@ def no_move_sentence(alert, fc):
     wait = max(f[30]["wait_p50"], f[60]["wait_p50"])
     return (f"No allowed staff move reduces the wait. "
             f"Tell waiting patients to expect about {whole(wait)} minutes.")
+
+
+def running_sentence(alert, fc, started, until):
+    f = fc[alert["station"]]
+    wait = max(f[30]["wait_p50"], f[60]["wait_p50"])
+    return (f"Applied at {hhmm(started)} and running until {hhmm(until)}. No further allowed "
+            f"move reduces the wait. Tell waiting patients to expect about {whole(wait)} minutes.")
 
 
 def bars_sentence(alert):

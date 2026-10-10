@@ -180,7 +180,7 @@ The headline claim is the last row. The comparison that matters is tool-guided a
 | One outpatient department with five stations | Multiple departments or hospitals |
 | Replay of simulated days | Live data connection |
 | Simulator calibrated on a public event log where possible | Claims about a specific real hospital |
-| Four allowed staff moves | Rostering, shift planning, leave management |
+| Five allowed staff moves | Rostering, shift planning, leave management |
 | One screen | Mobile layout, multiple pages, settings |
 | English | Other languages |
 
@@ -229,7 +229,7 @@ All assumptions live in `config.yaml` and are listed in the README.
 ## 13. Open questions
 
 - Does the HospitalOPD log include a staff or resource column, and what is its licence?
-- Are the four allowed moves realistic for a real outpatient department?
+- Are the five allowed moves realistic for a real outpatient department?
 - What false-alarm budget would a real supervisor accept?
 - Should a moved clerk count as a full extra pair of hands at pharmacy, or less?
 

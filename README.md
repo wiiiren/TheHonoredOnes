@@ -156,14 +156,14 @@ The raw file is not in this repository because it names individual doctors. Only
 | Alert quality | Are alerts early and rarely wrong? | Of 17 breaches, 9 were flagged before the limit was passed (median warning 30 minutes), 5 only once over it, and 3 were missed. There were 0.7 false alarms a day, against 1.4 without the two-checks-in-a-row rule. |
 | Cause accuracy | Is the named cause the true one? | Right on all 5 scenario days that raised an alert. The other 5 scenario days raised no alert. |
 | Robustness | Does it hold up on noisy inputs and unseen two-cause days? | With noisy inputs it still flagged 9 of 17 breaches early and named the right cause on 6 of 6 days, but false alarms rose to 1.7 a day. On 12 unseen two-cause days it flagged 15 of 22 breaches early; on the 10 days with an alert it named one of the two true causes on 9 and "mixed" on 1. |
-| Decision impact | Does following the tool beat a supervisor who reacts after the limit is passed? | Total waiting was 359 hours with the tool, 396 reacting and 426 with a fixed roster, across 2,066 patients. The tool beat reacting on 9 days, matched it on 11 and lost on none, using 17 staff moves against 12. The share of patients waiting over 30 minutes was level with reacting (2.7% against 2.6%), and about half the fixed roster's 5.2%. |
+| Decision impact | Does following the tool beat a supervisor who reacts after the limit is passed? | Total waiting was 329 hours with the tool, 367 reacting and 426 with a fixed roster, across 2,066 patients. The tool beat reacting on 9 days, matched it on 11 and lost on none, using 21 staff moves against 16. The share of patients waiting over 30 minutes was 0.7% with the tool, 1.0% reacting and 5.2% with a fixed roster. |
 
-Against a reacting supervisor that is 1.9 waiting hours saved a day, or about 560 hours a year assuming 300 clinic days. Half the test days carry an injected disruption, so a real clinic's mix of good and bad days will differ.
+Against a reacting supervisor that is 1.9 waiting hours saved a day, or about 580 hours a year assuming 300 clinic days. Half the test days carry an injected disruption, so a real clinic's mix of good and bad days will differ.
 
 ## Assumptions and limits
 
 - Results are from simulated days, not a live clinic.
-- Staff numbers and the four allowed moves are assumptions set in `config.yaml`.
+- Staff numbers and the five allowed moves are assumptions set in `config.yaml`.
 - A moved staff member is assumed to work at full speed immediately.
 - Patients do not abandon the queue in the simulation.
 - The tool recommends staffing moves only. It makes no clinical decisions.

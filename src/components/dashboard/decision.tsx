@@ -122,7 +122,7 @@ function ActionCard({ card, onApply, applying }: { card: Card; onApply: () => vo
             )}
           >
             <span className="animate-ping-soft size-2 rounded-full bg-current" />
-            Do this now
+            {card.label}
           </span>
           <span
             className={cn(
@@ -176,7 +176,7 @@ function ActionCard({ card, onApply, applying }: { card: Card; onApply: () => vo
           <div className="mt-5 rounded-xl bg-watch/10 px-3.5 py-3">
             <div className="flex items-center gap-1.5 text-[11px] font-bold tracking-[0.08em] text-watch uppercase">
               <Megaphone className="size-3.5" />
-              No move helps
+              {card.no_move_title}
             </div>
             <p className="mt-1 text-sm leading-relaxed text-foreground/75">{card.no_move}</p>
           </div>

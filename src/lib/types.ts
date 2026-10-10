@@ -60,6 +60,7 @@ export interface WhatIf {
 export interface ActionCard {
   station: string
   station_name: string
+  label: string
   title: string
   tone: "urgent" | "warn"
   deadline: string
@@ -72,6 +73,7 @@ export interface ActionCard {
   action_id: string
   action_label: string
   effect: string
+  no_move_title: string
   no_move: string
   causes: CauseBar[]
   causes_note: string

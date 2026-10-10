@@ -75,3 +75,25 @@ def test_apply_changes_the_day():
     assert after["outcome"]["with_pct"] <= after["outcome"]["without_pct"]
     closed = screen(clock=view.CLOSE, actions=f"{action}@{clock}").json()
     assert closed["mode"] == "closed"
+
+
+def test_card_acknowledges_a_running_move():
+    first = None
+    for clock in range(view.OPEN, view.CLOSE, view.TICK):
+        card = screen(clock=clock).json()["card"]
+        if card["helps"]:
+            first = (clock, card["action_id"], card["station"])
+            break
+    assert first, "the demo day never recommends a move"
+    start, action, station = first
+    seen = 0
+    for clock in range(start + view.TICK, start + view.MOVE_MIN, view.TICK):
+        body = screen(clock=clock, actions=f"{action}@{start}").json()
+        card = body["card"]
+        if body["mode"] != "alert" or card["station"] != station or card["helps"]:
+            continue
+        seen += 1
+        assert card["label"] == "Move in progress"
+        assert card["title"] == wording.ACTION_KEEP[action]
+        assert card["title"] != "Warn waiting patients."
+    assert seen, "the alert never stayed raised while the move was running"
