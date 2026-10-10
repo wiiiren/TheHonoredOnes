@@ -47,7 +47,7 @@ Replay controls used: the four **Demo day** buttons, **Play / Pause**, the **5 m
 **Why? bars:** Staffing gap 21 min, Demand surge 2 min, Slow processing 0 min.
 
 **Say:**
-> "It does not only predict. It names the cause: a staffing gap, three of four doctors on duty, a doctor was called to the ward. It gets there by re-running the next hour three times, each time putting one thing back to normal: arrivals, staffing, service speed. Restoring the doctor removes twenty-one minutes of the wait. A surge would explain two. So the answer is staff, not volume."
+> "It does not only predict. It names the cause: a staffing gap, three of four doctors on duty, a doctor was called to the ward. It gets there by re-running the next hour three times, each time putting one thing back to normal: arrivals, staffing, service speed. Restoring the doctor removes twenty-one minutes of the wait. So the answer is staff, not volume."
 
 ### 4. Recommend and act (1:20 to 1:55)
 
@@ -87,7 +87,7 @@ Replay controls used: the four **Demo day** buttons, **Play / Pause**, the **5 m
 **Tiles:** "30 min" median warning. "0.7" false alarms per day. "5 of 5" right cause. "10%" less total patient waiting.
 
 **Say:**
-> "We tested on twenty simulated clinic days the model never saw. Median warning: thirty minutes before the limit. Less than one false alarm a day. The right cause every time it raised an alert. And against a good supervisor who reacts once a queue is already over the limit, with the same staff and the same moves, following the tool cut total patient waiting by ten percent. To be clear about what is real: the arrival pattern comes from a public hospital log of nineteen thousand visits. Staffing, service times and the results are simulated. A pilot needs one thing from a hospital: a timestamped export from its queue system."
+> "We tested on twenty simulated clinic days the model never saw. Median warning: thirty minutes before the limit. Less than one false alarm a day. The right cause every time it raised an alert. And against a good supervisor who reacts once a queue is already over the limit, with the same staff and the same moves, following the tool cut total patient waiting by ten percent. To be clear about what is real: the arrival pattern comes from a public hospital log of nineteen thousand visits. Staffing, service times and the results are simulated. A pilot needs one thing from a hospital: a timestamped export from its queue system. We built this for a hospital outpatient department, but the same approach fits any service where people move through a series of stations: bank branches, government counters, airport check-in."
 
 ## If something goes wrong
 
@@ -152,3 +152,6 @@ Patients never leave the queue in the simulation, a moved staff member works at 
 
 **What would a pilot need?**
 A timestamped event-log export from the hospital's queue or records system, and its own list of allowed staff moves.
+
+**Could this work outside a hospital?**
+The approach carries over to any service with stations and queues. Stations, staffing, service times and allowed moves are settings in one file. The route people take between stations is written into the simulator for a clinic, so another sector would need that part adapted.
