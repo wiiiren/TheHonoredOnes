@@ -124,7 +124,7 @@ def arrival_rates(clock, weekday, a15, a30, a60, source="model") -> tuple:
     """Expected arrivals per minute at registration for each of the next 60 minutes."""
     P = params()
     rows, usual = feature_rows(clock, weekday, a15, a30, a60)
-    if source == "usual":
+    if source in ("usual", "no_model"):
         counts = usual
     else:
         multiplier = _model().predict(np.array(rows, dtype=float))
@@ -306,8 +306,9 @@ def _build(state, P, d, r, speeds):
 def project(state, arrivals="model", staff="state", speed="state", move=None) -> Projection:
     """Run the clinic forward 60 minutes `forecast.runs` times.
 
-    arrivals  "model" (learned forecaster) or "usual" (usual level for the time of day,
-              and without the patients already waiting because of a surge)
+    arrivals  "model" (learned forecaster), "usual" (usual level for the time of day,
+              and without the patients already waiting because of a surge) or "no_model"
+              (usual level, queues untouched: the evaluation's test of what the model adds)
     staff     "state" (who is on duty now) or "roster" (the planned roster)
     speed     "state" (recent service speed) or "normal" (the usual service time)
     move      an allowed move id applied for the whole hour, or None

@@ -52,6 +52,7 @@ export interface CauseBar {
 
 export interface WhatIf {
   label: string
+  effect: string
   saved: number
   added: number
   after: string

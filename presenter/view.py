@@ -132,6 +132,7 @@ class CauseBar:
 @dataclasses.dataclass
 class WhatIf:
     label: str = ""
+    effect: str = ""            # "Saves 5 min" | "Adds 5 min here" | "No change here"
     saved: int = 0
     added: int = 0
     after: str = ""
@@ -235,7 +236,7 @@ def _station_view(station, state, fc, status, focus):
         key=station, name=w.name(station), wait_now=now, trend=trend, trend_dir=direction,
         status=status, status_word=w.STATUS_WORD[status],
         chance=w.chance_pct(prob) if prob > 0 else 0,
-        staff=f"{on} of {roster} {w.staff_noun(station, roster)}",
+        staff=w.staff_label(station, on, roster),
         waiting=int(s["waiting"]), fill=min(100, round(now / LIMIT * 100)) if LIMIT else 0,
         focus=station == focus,
     )
@@ -301,7 +302,8 @@ def _action_card(alert, state, fc, recs):
         no_move_title=no_move_title, no_move=no_move,
         causes=_cause_bars(alert),
         causes_note=w.bars_sentence(alert),
-        what_ifs=[WhatIf(label=r["label"], saved=w.whole(r["wait_saved_min"]),
+        what_ifs=[WhatIf(label=r["label"], effect=w.what_if_effect(r["wait_saved_min"]),
+                         saved=w.whole(r["wait_saved_min"]),
                          added=w.whole(r["donor_wait_added_min"]) if r.get("donor_station") else 0,
                          after=w.name(r.get("bottleneck_after")) or "None")
                   for r in others],

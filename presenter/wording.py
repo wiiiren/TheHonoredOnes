@@ -77,6 +77,12 @@ def pct(share):
     return whole(share * 100 if share <= 1 else share)
 
 
+def pct1(share):
+    """Share of patients as a percentage to one decimal; accepts 0-1 or 0-100."""
+    share = float(share)
+    return round(share * 100 if share <= 1 else share, 1)
+
+
 def name(station):
     return station.capitalize() if station else ""
 
@@ -165,6 +171,23 @@ def affected_sentence(alert):
 
 def action_helps(action):
     return bool(action) and whole(action["wait_saved_min"]) >= 1
+
+
+def staff_label(station, on, roster):
+    """'3 of 4 doctors', or '3 clerks, 1 extra' when a move has added someone."""
+    if on > roster:
+        return f"{on} {staff_noun(station, on)}, {on - roster} extra"
+    return f"{on} of {roster} {staff_noun(station, roster)}"
+
+
+def what_if_effect(saved_min):
+    """What another move does to this station's wait: it can also make it worse."""
+    saved = whole(saved_min)
+    if saved >= 1:
+        return f"Saves {saved} min"
+    if saved <= -1:
+        return f"Adds {-saved} min here"
+    return "No change here"
 
 
 def saved_phrase(patient_min):
@@ -315,15 +338,17 @@ def trust_notes(r):
     tool = (pol.get("tool") or {}).get("share_over_30")
     reactive = (pol.get("reactive") or {}).get("share_over_30")
     if tool is not None and reactive is not None:
-        t, rv = pct(tool), pct(reactive)
+        # One decimal here: these shares are small, and whole numbers hide the difference.
+        t, rv = pct1(tool), pct1(reactive)
         if t < rv:
             notes.append(f"Following the top action cut patients waiting over 30 minutes from "
-                         f"{rv}% to {t}%, against {AGAINST}.")
+                         f"{rv:.1f}% to {t:.1f}%, against {AGAINST}.")
         elif t == rv:
-            notes.append(f"The share of patients waiting over 30 minutes was about the same: "
-                         f"{t}% with the tool and {rv}% reacting.")
+            notes.append(f"The share of patients waiting over 30 minutes was the same: "
+                         f"{t:.1f}% with the tool and {rv:.1f}% reacting.")
         else:
-            notes.append(f"Patients waiting over 30 minutes: {t}% with the tool, {rv}% reacting.")
+            notes.append(f"Patients waiting over 30 minutes: {t:.1f}% with the tool, "
+                         f"{rv:.1f}% reacting.")
     calibration_note = (r.get("calibration") or {}).get("note")
     if r.get("data_mode") == "calibrated" and calibration_note:
         notes.append(f"What is real: {calibration_note[0].lower()}{calibration_note[1:]}")

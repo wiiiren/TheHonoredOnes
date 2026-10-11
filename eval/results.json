@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-10T17:37:38+00:00",
+  "generated_at": "2026-10-10T23:59:40+00:00",
   "data_mode": "calibrated",
   "test_days": 20,
   "wait_limit_min": 30.0,
@@ -244,6 +244,33 @@
         "no_alert": 0
       }
     }
+  },
+  "model_value": {
+    "note": "Same test days, same simulator and alert rule. 'without_model' forecasts arrivals at the usual level for the time of day and weekday.",
+    "with_model": {
+      "breaches_caught_early": 9,
+      "breaches_flagged_only_once_over": 5,
+      "breaches_missed": 3,
+      "false_alarms_per_day": 0.7,
+      "median_warning_min": 30.0,
+      "wait_error_60_min": 1.57,
+      "wait_error_60_min_busy": 9.89,
+      "arrivals_error_next_hour": 2.7,
+      "arrivals_error_next_hour_in_surge": 7.81
+    },
+    "without_model": {
+      "breaches_caught_early": 8,
+      "breaches_flagged_only_once_over": 5,
+      "breaches_missed": 4,
+      "false_alarms_per_day": 0.7,
+      "median_warning_min": 30.0,
+      "wait_error_60_min": 1.55,
+      "wait_error_60_min_busy": 9.82,
+      "arrivals_error_next_hour": 2.69,
+      "arrivals_error_next_hour_in_surge": 8.79
+    },
+    "breaches": 17,
+    "surge_test_days": 3
   },
   "robustness": {
     "noisy": {
@@ -579,5 +606,5 @@
     "The reactive supervisor moves staff only after a wait has passed the limit, and does not take a clerk from a registration desk that is more than half way to the limit.",
     "Station weights used only to rank alerts: {'registration': 1.0, 'consultation': 1.5, 'laboratory': 1.0, 'imaging': 1.0, 'pharmacy': 1.2}."
   ],
-  "runtime_seconds": 74.3
+  "runtime_seconds": 84.0
 }

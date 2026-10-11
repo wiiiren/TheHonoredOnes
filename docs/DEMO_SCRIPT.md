@@ -1,6 +1,6 @@
 # Demo script
 
-A 3-minute live demo of the Services Bottleneck Predictor, followed by answers to likely questions. Every time, number and sentence below is what the live app shows today on https://bottleneck-predictor.vercel.app/. If the engine, the demo days or the results change, re-check them.
+A 3-minute live demo of the Services Bottleneck Predictor, followed by answers to likely questions. It is built to answer the brief's core question: does the model help someone make a better decision, and can you prove it? Every time, number and sentence below is what the live app shows today on https://bottleneck-predictor.vercel.app/. If the engine, the demo days or the results change, re-check them.
 
 ## The story in one line
 
@@ -20,36 +20,38 @@ Do this 10 minutes before your slot.
 
 Replay controls used: the four **Demo day** buttons, **Play / Pause**, the **5 min** step button, and **Apply move** on the card. To stop on an exact time, play on Fast, pause a little early, then use **5 min** to step forward.
 
+**Timing.** The spoken lines total about 390 words, which is roughly 2:37 at a normal speaking pace. That leaves a little over 20 seconds for clicks and pauses. Start each line while the replay is still running; do not wait for it in silence.
+
 ### 1. Problem and user (0:00 to 0:20)
 
 **Do:** nothing. The screen shows "Doctor called away" at 08:00, "No action needed".
 
 **Say:**
-> "In an outpatient clinic, staff are assigned to stations in the morning, but the bottleneck moves during the day. The shift supervisor only notices when the waiting room is already full, and a queue that builds in twenty minutes takes hours to clear. Our tool tells that supervisor which station will overload next, why, and which staff move prevents it. Here is one morning, replayed."
+> "In an outpatient clinic, staff are placed in the morning, but the bottleneck moves all day. The supervisor notices only when the waiting room is full, and by then it takes hours to clear. Our tool tells that supervisor which station will overload next, why, and which staff move prevents it."
 
 ### 2. Detect (0:20 to 0:50)
 
-**Do:** press **Play**. Pause when the clock passes about 10:30. Press **5 min** until the card appears at **11:00**.
+**Do:** press **Play** and start speaking. Pause when the clock passes about 10:30. Press **5 min** until the card appears at **11:00**.
 
 **Screen at 10:55:** "No action needed yet. Keeping an eye on Consultation."
 
 **Screen at 11:00:** Consultation shows a 10-minute wait, "Rising to 20 min by 11:30", status **Will breach**, 55% chance, "3 of 4 doctors".
 
 **Say:**
-> "For three hours the screen says no action needed. At 10:55 it starts watching consultation but does not raise an alarm. Five minutes later it does. Look at the wait: ten minutes. Nobody in the waiting room would call this a problem yet. The tool says consultation will pass the thirty-minute limit by 11:35."
+> "This is one morning, replayed. For three hours: no action needed. At eleven it raises an alert. Look at the wait: ten minutes. Nobody in the waiting room sees a problem yet. The tool simulates the next hour thirty times, using a model that has learned the arrival pattern, and says consultation will pass the thirty-minute limit by 11:35."
 
-### 3. Categorize and explain (0:50 to 1:20)
+### 3. Categorize and explain (0:50 to 1:15)
 
-**Do:** read the card aloud, then open **Why?**
+**Do:** point at the cause on the card, then open **Why?**
 
 **Card:** "Open the reserve room with the on-call doctor." / "Consultation is likely to pass the 30-minute limit by 11:35 (55% chance). Cause: staffing gap. 3 of 4 doctors are on duty. About 27 patients will be affected." / "Act within 35 min".
 
 **Why? bars:** Staffing gap 21 min, Demand surge 2 min, Slow processing 0 min.
 
 **Say:**
-> "It does not only predict. It names the cause: a staffing gap, three of four doctors on duty, a doctor was called to the ward. It gets there by re-running the next hour three times, each time putting one thing back to normal: arrivals, staffing, service speed. Restoring the doctor removes twenty-one minutes of the wait. So the answer is staff, not volume."
+> "It also says what kind of problem this is. Cause: staffing gap, three of four doctors on duty. It finds that by re-running the hour with arrivals, staffing and service speed each put back to normal. Restoring the doctor removes twenty-one minutes. So the problem is staff, not volume."
 
-### 4. Recommend and act (1:20 to 1:55)
+### 4. Recommend and act (1:15 to 1:45)
 
 **Do:** point at **Expected effect**, press **Apply move**, then press **5 min** once. Stop there.
 
@@ -58,36 +60,47 @@ Replay controls used: the four **Demo day** buttons, **Play / Pause**, the **5 m
 **Screen at 11:05 after Apply:** "No action needed". Consultation is back to **OK** with 4 of 4 doctors. The **Moves applied** panel reads "Patients waiting over 30 min today: 22% without this move, 1% with it".
 
 **Say:**
-> "The recommendation is one move the clinic is allowed to make, with what it gains and what it costs: twenty-one minutes off the consultation wait, about three patient-hours of waiting saved in the next hour. It only suggests moves staff are qualified for: it never sends a doctor or a radiographer to another station. I apply it. Five minutes later consultation is back to OK. And here is the whole day: without this move, twenty-two percent of patients wait over thirty minutes. With it, one percent."
+> "It recommends one move the clinic is allowed to make, with its effect: twenty-one minutes off the wait, about three patient-hours saved in the next hour. It never moves a doctor or a radiographer to another station. I apply it. Five minutes later consultation is back to OK. Across the whole day, patients waiting over thirty minutes fall from twenty-two percent to one."
 
-### 5. Prioritize (1:55 to 2:20)
+### 5. Prioritize (1:45 to 2:15)
 
-**Do:** select **Holiday rush**. Press **Play**, pause near 10:30, step with **5 min** to **10:50**. Point at **Also watching**. Step once more to **10:55**. Do not press Apply on this day.
+**Do:** select **Holiday rush**, press **Play** and start speaking. Pause near 10:30, step with **5 min** to **10:50**. Point at the "Ranked first" line and at **Also watching**. Step once more to **10:55**. Do not press Apply on this day.
 
 **Screen at 10:50:** card is Registration, "Open a third registration desk with the float clerk", cause demand surge, "Arrivals are about 2 times the usual level for this hour". Under it: "Ranked first of 2: 41 patients affected, 50% chance, about 4 minutes over the limit." **Also watching (1):** Consultation, "May pass the limit in about 45 min", Demand surge.
 
 **Screen at 10:55:** the two swap. The card is now Consultation, "Open the reserve room with the on-call doctor", "Ranked first of 2: 36 patients affected, 55% chance, about 5 minutes over the limit."; Registration moves to Also watching.
 
 **Say:**
-> "A different morning: a walk-in rush, arrivals at double the usual level. Now two stations are at risk. The tool shows one action, ranks the rest below it, and says why on the card: forty-one patients affected, a fifty percent chance, four minutes over the limit. The ranking is those three numbers multiplied together, times a weight for the station. Five minutes later the order flips: the rush has moved on from registration to consultation, and the card moves with it. This is the bottleneck moving, which is what a fixed roster cannot follow."
+> "A different morning: a walk-in rush at double the usual arrivals. Two stations are now at risk. The tool shows one action, ranks the other below it, and says why: forty-one patients affected, fifty percent chance, four minutes over the limit. Five minutes later the order flips, because the rush has moved from registration to consultation. A fixed roster cannot follow that."
 
-### 6. False alarms (2:20 to 2:35)
+### 6. False alarms (2:15 to 2:27)
 
 **Do:** select **Ordinary busy day** and press **Play**. Let it run while you speak.
 
 **Screen:** "No action needed" all day. It shows "No action needed yet" briefly at 11:05 and 11:30, and never raises an alert.
 
 **Say:**
-> "An alarm that cries wolf gets ignored. On an ordinary busy day the tool watches the peak and stays quiet. It only raises an alert after two checks in a row agree."
+> "An alarm that cries wolf gets ignored. On an ordinary busy day it watches the peak and stays quiet: an alert needs two checks in a row."
 
-### 7. Proof (2:35 to 3:00)
+### 7. Proof and close (2:27 to 3:00)
 
-**Do:** scroll to **Why trust this?**
+**Do:** scroll to **Why trust this?** and point at the tiles as you name them.
 
 **Tiles:** "30 min" median warning. "0.7" false alarms per day. "5 of 5" right cause. "10%" less total patient waiting.
 
 **Say:**
-> "We tested on twenty simulated clinic days the model never saw. Median warning: thirty minutes before the limit. Less than one false alarm a day. The right cause every time it raised an alert. And against a good supervisor who reacts once a queue is already over the limit, with the same staff and the same moves, following the tool cut total patient waiting by ten percent. To be clear about what is real: the arrival pattern comes from a public hospital log of nineteen thousand visits. Staffing, service times and the results are simulated. A pilot needs one thing from a hospital: a timestamped export from its queue system. We built this for a hospital outpatient department, but the same approach fits any service where people move through a series of stations: bank branches, government counters, airport check-in."
+> "We tested on twenty simulated days the model never saw: a median warning of thirty minutes, under one false alarm a day. Arrival patterns come from a real hospital log; staffing and results are simulated. Does it help someone make a better decision? Against a good supervisor who reacts once a queue is over the limit, it cut total waiting by ten percent and was never worse on any day. The same approach fits any service with queues: banks, government counters, airports."
+
+### If you are running long
+
+Cut in this order. Each cut is a whole sentence, so nothing is left half-said.
+
+1. Beat 7: "The same approach fits any service with queues: banks, government counters, airports." (about 5 seconds)
+2. Beat 5: "A fixed roster cannot follow that." (2 seconds)
+3. Beat 4: "It never moves a doctor or a radiographer to another station." (4 seconds)
+4. Beat 2: "Nobody in the waiting room sees a problem yet." (3 seconds)
+
+Never cut the question and answer in beat 7. It is the judges' own core question.
 
 ## If something goes wrong
 
@@ -105,8 +118,6 @@ These are real behaviours of the current build that distract from the story.
 - **Do not press Apply on "Holiday rush".** Applying only the first move there makes the whole-day line read 16% to 28%: the third desk pushes the rush into consultation faster. Following every recommendation through the day brings it to 2%, but that takes five moves and more time than you have.
 - **Do not keep playing "Doctor called away" past 11:10 after Apply.** The card then shows a 95% chance and "expect about 53 minutes", though the wait stays under 30.
 - **Do not play "Holiday rush" past 11:20.** Later cards name "slow processing" at pharmacy on a surge day.
-- **Do not open "What if?"** on the 11:00 card. One line reads "Saves -5 min".
-- **Do not open "Data and assumptions"** unless asked. Its first line rounds the over-30 share to "1% with the tool and 1% reacting"; the unrounded figures are 0.7% and 1.0%.
 
 ## Optional extra, if you are asked for a third cause
 
@@ -128,6 +139,12 @@ Sixty minutes ahead the average error is 1.6 minutes, against 2.5 for "the wait 
 
 **How many problems does it miss?**
 Of 17 breaches on the test days, it flagged 9 before the limit was passed, 5 only once the wait was over it, and missed 3.
+
+**Where is the AI, and what does the learned model add?**
+There are two parts. A gradient-boosted model, trained on 60 simulated days, forecasts arrivals from how far recent arrivals are from the usual level. A simulator then runs the next hour 30 times from the live queues. Most of the predictive power comes from the simulation. The evaluation tests this by replacing the learned model with "arrivals stay at the usual level" on the same 20 test days. The average wait error is unchanged (1.6 minutes either way). The model catches one more breach early (9 of 17 against 8) and misses one fewer (3 against 4). During a surge it cuts the error in forecast arrivals from 8.8 to 7.8 patients an hour, measured on the 3 surge test days. These figures are in `eval/results.json` under `model_value`.
+
+**How many alerts are false alarms?**
+Half. On the 20 test days it raised 28 alerts and 14 were followed by a real breach within the hour. That is 0.7 false alarms a day.
 
 **How do you keep false alarms down?**
 An alert needs a 30% chance or more on two checks in a row, and clears below 20%. That rule halves false alarms, from 1.4 to 0.7 a day. The thresholds were chosen on 10 separate tuning days with a budget of one false alarm a day.

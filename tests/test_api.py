@@ -105,6 +105,17 @@ def test_effect_states_waiting_saved_across_the_clinic():
     assert wording.saved_phrase(0) == ""
 
 
+def test_wording_never_shows_impossible_numbers():
+    assert wording.staff_label("registration", 3, 2) == "3 clerks, 1 extra"
+    assert wording.staff_label("consultation", 3, 4) == "3 of 4 doctors"
+    assert wording.what_if_effect(-5.2) == "Adds 5 min here"
+    assert wording.what_if_effect(4.6) == "Saves 5 min"
+    assert wording.what_if_effect(0.2) == "No change here"
+    note = wording.trust_notes({"policy": {"tool": {"share_over_30": 0.0068},
+                                           "reactive": {"share_over_30": 0.0102}}})[0]
+    assert "from 1.0% to 0.7%" in note
+
+
 def test_card_acknowledges_a_running_move():
     first = None
     for clock in range(view.OPEN, view.CLOSE, view.TICK):

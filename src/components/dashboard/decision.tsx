@@ -80,8 +80,8 @@ function WhatIfs({ card }: { card: Card }) {
                 w.saved > 0 ? "bg-ok/10 text-ok" : "border bg-card text-muted-foreground",
               )}
             >
-              <ArrowDown className="size-3" />
-              Saves {w.saved} min
+              {w.saved < 0 ? <ArrowUp className="size-3" /> : <ArrowDown className="size-3" />}
+              {w.effect}
             </span>
             <span className="inline-flex items-center gap-1 rounded-md border bg-card px-2 py-0.5 text-muted-foreground">
               <ArrowUp className="size-3" />

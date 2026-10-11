@@ -21,7 +21,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from engine import api, sim  # noqa: E402
-from engine.forecast import alert_settings, breach_probs, project, step_alert  # noqa: E402
+from engine.forecast import (alert_settings, arrival_rates, breach_probs, project,  # noqa: E402
+                             step_alert)
 from engine.recommend import IDLE, advance, episode_cause  # noqa: E402
 from engine.sim import CAUSES, STATIONS  # noqa: E402
 
@@ -61,13 +62,17 @@ def truth(day) -> np.ndarray:
     return r.true_wait[idx]
 
 
-def watch(day, noise=False, settings=None, cause=True):
+def watch(day, noise=False, settings=None, cause=True, arrivals="model"):
     """Replay a day tick by tick as the engine sees it.
 
     Returns probs [tick, station], p50 forecasts {30|60: [tick, station]}, the observed
     wait now [tick, station], raised flags [tick, station] and, per alert raise,
-    (tick index, station index, cause shown when it was first raised)."""
+    (tick index, station index, cause shown when it was first raised).
+
+    arrivals="no_model" forecasts with arrivals at the usual level instead of the learned
+    model; causes are not worked out in that case."""
     settings = settings or alert_settings()
+    cause = cause and arrivals == "model"
     n = len(TICKS)
     probs = np.zeros((n, NS))
     seen = np.zeros((n, NS))
@@ -77,8 +82,8 @@ def watch(day, noise=False, settings=None, cause=True):
     prev = [IDLE] * NS
     for i, clock in enumerate(TICKS):
         state = observe(day, clock, noise)
-        proj = project(state)
-        probs[i] = breach_probs(state)
+        proj = project(state, arrivals=arrivals)
+        probs[i] = breach_probs(state) if arrivals == "model" else [proj.prob(si) for si in range(NS)]
         seen[i] = [state["stations"][s]["wait_now_min"] for s in STATIONS]
         for h in p50:
             p50[h][i] = np.median(proj.W[:, h // P.tick - 1, :], axis=0)
@@ -404,6 +409,62 @@ def assumptions() -> list:
     return out
 
 
+# --------------------------------------------------------------------------- model value
+
+def arrivals_error(days, source) -> dict:
+    """Mean absolute error of registration arrivals forecast for the next hour, in
+    patients: over every tick, and over the ticks while an injected surge is under way."""
+    every, in_surge = [], []
+    for d in days:
+        r = sim.day_run(d)
+        per_min = np.zeros(1440 + 60)
+        n = min(len(r.reg_per_min), 1440 - P.open)
+        per_min[P.open:P.open + n] = r.reg_per_min[:n]
+        cum = np.concatenate([[0.0], np.cumsum(per_min)])
+        surges = []
+        for ev in sim.day_spec(d).get("events", []):
+            if ev["type"] == "demand_surge":
+                h, m = ev["start"].split(":")
+                start = int(h) * 60 + int(m)
+                surges.append((start + 15, start + ev["duration"]))
+        for clock in TICKS:
+            ra = api.get_state(d, clock)["recent_arrivals"]
+            predicted = sum(arrival_rates(clock, sim.day_spec(d)["weekday"], ra[15], ra[30], ra[60], source))
+            err = abs(predicted - (cum[clock + 60] - cum[clock]))
+            every.append(err)
+            if any(lo <= clock <= hi for lo, hi in surges):
+                in_surge.append(err)
+    return {"all": round(float(np.mean(every)), 2),
+            "in_surge": round(float(np.mean(in_surge)), 2) if in_surge else None,
+            "surge_ticks": len(in_surge)}
+
+
+def run_model_value(days, views, baseline) -> dict:
+    """What the learned arrival model adds: the same forecast and alert rule with the model
+    replaced by 'arrivals stay at the usual level for this time of day'."""
+    without = {d: watch(d, arrivals="no_model") for d in days}
+    out = {"note": ("Same test days, same simulator and alert rule. 'without_model' forecasts "
+                    "arrivals at the usual level for the time of day and weekday.")}
+    for name, v, source in (("with_model", views, "model"), ("without_model", without, "no_model")):
+        alerts = run_alerts(days, v)
+        fc = run_forecast(days, v, baseline)["60"]
+        arr = arrivals_error(days, source)
+        out[name] = {
+            "breaches_caught_early": alerts["breaches_caught_early"],
+            "breaches_flagged_only_once_over": alerts["breaches_flagged_only_once_over"],
+            "breaches_missed": alerts["breaches_missed"],
+            "false_alarms_per_day": alerts["false_alarms_per_day"],
+            "median_warning_min": alerts["median_warning_min"],
+            "wait_error_60_min": fc["model"],
+            "wait_error_60_min_busy": fc["busy"]["model"],
+            "arrivals_error_next_hour": arr["all"],
+            "arrivals_error_next_hour_in_surge": arr["in_surge"],
+        }
+    out["breaches"] = run_alerts(days, views)["breaches"]
+    out["surge_test_days"] = sum(sim.day_spec(d)["scenario"] == "demand_surge" for d in days)
+    return out
+
+
 def main(quick=False):
     t0 = time.perf_counter()
     test = sim.day_ids("test")
@@ -427,6 +488,9 @@ def main(quick=False):
         print("  forecast 60 min:", {k: results["forecast"]["60"][k] for k in ("model", "persistence", "time_of_day")})
         results["cause"] = run_cause(test, views)
         print("  cause:", results["cause"]["correct"], "of", results["cause"]["days_with_alert"])
+        results["model_value"] = run_model_value(test, views, baseline)
+        print("  with the model:   ", results["model_value"]["with_model"])
+        print("  without the model:", results["model_value"]["without_model"])
 
         print("robustness: noisy view ...")
         noisy_views = {d: watch(d, noise=True) for d in test}
