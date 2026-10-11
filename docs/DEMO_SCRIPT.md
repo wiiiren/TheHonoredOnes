@@ -20,16 +20,16 @@ Do this 10 minutes before your slot.
 
 Replay controls used: the four **Demo day** buttons, **Play / Pause**, the **5 min** step button, and **Apply move** on the card. To stop on an exact time, play on Fast, pause a little early, then use **5 min** to step forward.
 
-**Timing.** The spoken lines total about 390 words, which is roughly 2:37 at a normal speaking pace. That leaves a little over 20 seconds for clicks and pauses. Start each line while the replay is still running; do not wait for it in silence.
+**Timing.** The spoken lines total about 425 words, which is roughly 2:50 at a normal speaking pace. That leaves about 10 seconds for clicks and pauses, which is very little: plan to use the first cut under "If you are running long" unless rehearsal comes in under three minutes. Start each line while the replay is still running; do not wait for it in silence.
 
-### 1. Problem and user (0:00 to 0:20)
+### 1. Problem and user (0:00 to 0:25)
 
 **Do:** nothing. The screen shows "Doctor called away" at 08:00, "No action needed".
 
 **Say:**
-> "In an outpatient clinic, staff are placed in the morning, but the bottleneck moves all day. The supervisor notices only when the waiting room is full, and by then it takes hours to clear. Our tool tells that supervisor which station will overload next, why, and which staff move prevents it."
+> "We are TheHonoredOnes, and this is the Services Bottleneck Predictor. In a hospital outpatient clinic the bottleneck moves all day: registration, then consultation, then pharmacy. The supervisor sees it only when the waiting room is full, and by then it takes hours to clear. We warn them about thirty minutes earlier, say why, and name the staff move that prevents it."
 
-### 2. Detect (0:20 to 0:50)
+### 2. Detect (0:25 to 0:55)
 
 **Do:** press **Play** and start speaking. Pause when the clock passes about 10:30. Press **5 min** until the card appears at **11:00**.
 
@@ -38,9 +38,9 @@ Replay controls used: the four **Demo day** buttons, **Play / Pause**, the **5 m
 **Screen at 11:00:** Consultation shows a 10-minute wait, "Rising to 20 min by 11:30", status **Will breach**, 55% chance, "3 of 4 doctors".
 
 **Say:**
-> "This is one morning, replayed. For three hours: no action needed. At eleven it raises an alert. Look at the wait: ten minutes. Nobody in the waiting room sees a problem yet. The tool simulates the next hour thirty times, using a model that has learned the arrival pattern, and says consultation will pass the thirty-minute limit by 11:35."
+> "Here is one morning, replayed. For three hours the screen stays quiet. At eleven it raises an alert, while the wait at consultation is only ten minutes and nobody in the waiting room sees a problem. The tool has simulated the next hour thirty times, using a model that has learned the arrival pattern, and expects consultation to pass the thirty-minute limit by 11:35."
 
-### 3. Categorize and explain (0:50 to 1:15)
+### 3. Categorize and explain (0:55 to 1:18)
 
 **Do:** point at the cause on the card, then open **Why?**
 
@@ -49,9 +49,9 @@ Replay controls used: the four **Demo day** buttons, **Play / Pause**, the **5 m
 **Why? bars:** Staffing gap 21 min, Demand surge 2 min, Slow processing 0 min.
 
 **Say:**
-> "It also says what kind of problem this is. Cause: staffing gap, three of four doctors on duty. It finds that by re-running the hour with arrivals, staffing and service speed each put back to normal. Restoring the doctor removes twenty-one minutes. So the problem is staff, not volume."
+> "The tool also names the kind of problem: a staffing gap, with only three of four doctors on duty. It works this out by re-running the next hour with arrivals, staffing and service speed each put back to normal. Restoring the fourth doctor removes twenty-one minutes of the wait, so the problem is staffing, not patient numbers."
 
-### 4. Recommend and act (1:15 to 1:45)
+### 4. Recommend and act (1:18 to 1:46)
 
 **Do:** point at **Expected effect**, press **Apply move**, then press **5 min** once. Stop there.
 
@@ -60,9 +60,9 @@ Replay controls used: the four **Demo day** buttons, **Play / Pause**, the **5 m
 **Screen at 11:05 after Apply:** "No action needed". Consultation is back to **OK** with 4 of 4 doctors. The **Moves applied** panel reads "Patients waiting over 30 min today: 22% without this move, 1% with it".
 
 **Say:**
-> "It recommends one move the clinic is allowed to make, with its effect: twenty-one minutes off the wait, about three patient-hours saved in the next hour. It never moves a doctor or a radiographer to another station. I apply it. Five minutes later consultation is back to OK. Across the whole day, patients waiting over thirty minutes fall from twenty-two percent to one."
+> "It recommends one move the clinic is allowed to make and states its effect: twenty-one minutes off the wait and about three patient-hours saved in the next hour. It never sends a doctor or a radiographer to another station. I apply it, and five minutes later consultation is back to OK. Across the whole day, patients waiting over thirty minutes fall from twenty-two percent to one."
 
-### 5. Prioritize (1:45 to 2:15)
+### 5. Prioritize (1:46 to 2:14)
 
 **Do:** select **Holiday rush**, press **Play** and start speaking. Pause near 10:30, step with **5 min** to **10:50**. Point at the "Ranked first" line and at **Also watching**. Step once more to **10:55**. Do not press Apply on this day.
 
@@ -71,25 +71,25 @@ Replay controls used: the four **Demo day** buttons, **Play / Pause**, the **5 m
 **Screen at 10:55:** the two swap. The card is now Consultation, "Open the reserve room with the on-call doctor", "Ranked first of 2: 36 patients affected, 55% chance, about 5 minutes over the limit."; Registration moves to Also watching.
 
 **Say:**
-> "A different morning: a walk-in rush at double the usual arrivals. Two stations are now at risk. The tool shows one action, ranks the other below it, and says why: forty-one patients affected, fifty percent chance, four minutes over the limit. Five minutes later the order flips, because the rush has moved from registration to consultation. A fixed roster cannot follow that."
+> "A different morning: a walk-in rush at double the usual arrivals, with two stations at risk at once. The tool shows one action, ranks the other below it, and gives the reason: forty-one patients affected, a fifty percent chance, four minutes over the limit. Five minutes later the order flips, as the rush moves from registration to consultation. A fixed roster cannot follow that."
 
-### 6. False alarms (2:15 to 2:27)
+### 6. False alarms (2:14 to 2:26)
 
 **Do:** select **Ordinary busy day** and press **Play**. Let it run while you speak.
 
 **Screen:** "No action needed" all day. It shows "No action needed yet" briefly at 11:05 and 11:30, and never raises an alert.
 
 **Say:**
-> "An alarm that cries wolf gets ignored. On an ordinary busy day it watches the peak and stays quiet: an alert needs two checks in a row."
+> "An alarm that cries wolf gets ignored. On an ordinary busy day the tool watches the peak and stays quiet, because an alert needs two checks in a row."
 
-### 7. Proof and close (2:27 to 3:00)
+### 7. Proof and close (2:26 to 3:00)
 
 **Do:** scroll to **Why trust this?** and point at the tiles as you name them.
 
 **Tiles:** "30 min" median warning. "0.7" false alarms per day. "5 of 5" right cause. "10%" less total patient waiting.
 
 **Say:**
-> "We tested on twenty simulated days the model never saw: a median warning of thirty minutes, under one false alarm a day. Arrival patterns come from a real hospital log; staffing and results are simulated. Does it help someone make a better decision? Against a good supervisor who reacts once a queue is over the limit, it cut total waiting by ten percent and was never worse on any day. The same approach fits any service with queues: banks, government counters, airports."
+> "We tested it on twenty simulated days the model never saw. The median warning was thirty minutes, with under one false alarm a day. Arrival patterns come from a real hospital log; staffing and results are simulated. So does it help someone make a better decision? Against a good supervisor who reacts once a queue is over the limit, it cut total waiting by ten percent and was never worse on any day. The same approach fits any service with queues: banks, government counters, airports."
 
 ### If you are running long
 
@@ -98,7 +98,7 @@ Cut in this order. Each cut is a whole sentence, so nothing is left half-said.
 1. Beat 7: "The same approach fits any service with queues: banks, government counters, airports." (about 5 seconds)
 2. Beat 5: "A fixed roster cannot follow that." (2 seconds)
 3. Beat 4: "It never moves a doctor or a radiographer to another station." (4 seconds)
-4. Beat 2: "Nobody in the waiting room sees a problem yet." (3 seconds)
+4. Beat 1: "We are TheHonoredOnes, and this is the Services Bottleneck Predictor." if you are introduced by name (4 seconds)
 
 Never cut the question and answer in beat 7. It is the judges' own core question.
 
