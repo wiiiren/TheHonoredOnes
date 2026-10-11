@@ -126,49 +126,49 @@ Select **Records system slow**, play to **10:55**. The card reads "Cause: slow p
 ## Likely questions
 
 **What is real and what is simulated?**
-The arrival pattern by hour and weekday, and the share of patients sent to laboratory and imaging, are measured from the public HospitalOPD log (19,214 visits on 156 days). Service times, staff numbers, the pharmacy share and the five allowed moves are assumptions. Every result is from simulated days.
+Two things are measured from real data, the public HospitalOPD log of 19,214 visits on 156 days: how arrivals vary by hour and weekday, and the share of patients sent to the laboratory and to imaging. Everything else is an assumption: service times, staff numbers, the pharmacy share and the five allowed moves. All of our results come from simulated days.
 
 **Why simulate at all?**
-A real log cannot answer "what if we had moved someone", and it has no labels for the cause. A simulator can do both.
+A real log shows what happened, not what would have happened if a supervisor had moved someone. It also does not record why a queue built up. A simulator lets us test both.
 
 **How does the forecast work?**
-It simulates the next 60 minutes from the current queues 30 times. The share of runs over 30 minutes is the chance of a breach. A gradient-boosted model, trained on 60 simulated days, forecasts arrivals so a surge is picked up from recent arrivals.
+Every five minutes it takes the queues as they are now and plays the next 60 minutes forward 30 times. The share of those runs in which the wait passes 30 minutes is the chance of a breach: 15 runs out of 30 means 50%. A gradient-boosted model, trained on 60 simulated days, supplies the expected arrivals, so a surge shows up as soon as recent arrivals run above normal.
 
 **Is it better than a simple guess?**
-Sixty minutes ahead the average error is 1.6 minutes, against 2.5 for "the wait stays the same" and 2.3 for the usual wait at that time of day. When a station is busy the error is 9.9 minutes: well ahead of "stays the same" (16.5) and level with the time-of-day average (9.8).
+On average, yes. Looking 60 minutes ahead, its average error is 1.6 minutes. Guessing "the wait will stay as it is now" is off by 2.5 minutes, and guessing "the usual wait for this time of day" is off by 2.3. When a station is busy all three errors are larger: 9.9 minutes for the tool, 16.5 for "stays as it is" and 9.8 for the time-of-day guess. So in busy periods it clearly beats the first guess and is level with the second.
 
 **How many problems does it miss?**
-Of 17 breaches on the test days, it flagged 9 before the limit was passed, 5 only once the wait was over it, and missed 3.
+There were 17 breaches on the test days. It flagged 9 before the wait passed the limit, flagged 5 only after the wait was already over it, and missed 3 completely.
 
 **Where is the AI, and what does the learned model add?**
-There are two parts. A gradient-boosted model, trained on 60 simulated days, forecasts arrivals from how far recent arrivals are from the usual level. A simulator then runs the next hour 30 times from the live queues. Most of the predictive power comes from the simulation. The evaluation tests this by replacing the learned model with "arrivals stay at the usual level" on the same 20 test days. The average wait error is unchanged (1.6 minutes either way). The model catches one more breach early (9 of 17 against 8) and misses one fewer (3 against 4). During a surge it cuts the error in forecast arrivals from 8.8 to 7.8 patients an hour, measured on the 3 surge test days. These figures are in `eval/results.json` under `model_value`.
+There are two parts. The first is a gradient-boosted model, trained on 60 simulated days, that forecasts arrivals by comparing recent arrivals with the usual level. The second is a simulator that plays the next hour forward 30 times from the live queues. Most of the predictive power comes from the simulator. We tested this by swapping the learned model for a simple assumption, "arrivals stay at the usual level", on the same 20 test days. The average wait error did not change: 1.6 minutes either way. With the model, the tool flagged one more breach early (9 of 17 instead of 8) and missed one fewer (3 instead of 4). During a surge, the model's forecast of arrivals was off by 7.8 patients an hour instead of 8.8, measured on the 3 surge test days. These figures are in `eval/results.json` under `model_value`.
 
 **How many alerts are false alarms?**
-Half. On the 20 test days it raised 28 alerts and 14 were followed by a real breach within the hour. That is 0.7 false alarms a day.
+Half of them. On the 20 test days it raised 28 alerts, and 14 were followed by a real breach within the hour. The other 14 were false alarms, which is 0.7 a day.
 
 **How do you keep false alarms down?**
-An alert needs a 30% chance or more on two checks in a row, and clears below 20%. That rule halves false alarms, from 1.4 to 0.7 a day. The thresholds were chosen on 10 separate tuning days with a budget of one false alarm a day.
+The tool raises an alert only when the chance of a breach is 30% or more on two checks in a row, five minutes apart. It clears the alert after two checks in a row below 20%. Requiring the second check halves false alarms, from 1.4 a day to 0.7. We chose these thresholds on 10 separate tuning days, allowing ourselves at most one false alarm a day.
 
 **How often is the cause right?**
-On all 5 scenario test days that raised an alert. On the other 5 scenario days it raised no alert.
+Every time it raised an alert. Of the 10 test days with an injected problem, 5 raised an alert and all 5 named the right cause. The other 5 raised no alert at all.
 
 **Does it hold up on messy data?**
-With noisy inputs (queue counts, arrivals and service times all perturbed) it flagged the same 9 of 17 breaches early and named the right cause on 6 of 6 days, but false alarms rose to 1.7 a day. On 12 days with two causes at once, which it never trained on, it flagged 15 of 22 breaches early.
+Mostly, at the cost of more false alarms. We made the inputs noisy by distorting the queue counts, the arrival counts and the service times. It still flagged the same 9 of 17 breaches early and named the right cause on 6 of 6 days, but false alarms rose from 0.7 to 1.7 a day. We also tried 12 days with two problems at once, which it never saw in training. There it flagged 15 of 22 breaches early.
 
 **What is the measurable impact?**
-Three policies on the same 20 days with the same staff and moves. Total waiting: 426 hours with a fixed roster, 367 for a supervisor who reacts after the limit is passed, 329 following the tool. The tool beat reacting on 9 days, matched it on 11 and lost on none. Share of patients waiting over 30 minutes: 5.2%, 1.0% and 0.7%. That is about 1.9 waiting hours saved a day against reacting, or roughly 580 a year assuming 300 clinic days.
+We ran the same 20 days three ways, with the same staff and the same allowed moves each time. With a fixed roster, patients waited 426 hours in total. With a supervisor who reacts after a wait has passed the limit, 367 hours. Following the tool, 329 hours. Day by day, the tool beat the reacting supervisor on 9 days, matched them on 11 and never did worse. The share of patients waiting over 30 minutes was 5.2% with a fixed roster, 1.0% reacting and 0.7% with the tool. Against reacting, that is about 1.9 waiting hours saved a day, or roughly 580 a year if the clinic opens 300 days.
 
 **How is priority decided?**
-Chance of a breach, times patients affected, times expected minutes over the limit, times a station weight (consultation 1.5, pharmacy 1.2, the others 1.0). The weights are our judgment.
+Each alert gets a score: the chance of a breach, times the patients affected, times the expected minutes over the limit, times a weight for the station. Consultation is weighted 1.5, pharmacy 1.2 and the others 1.0. Those weights are our own judgment.
 
 **Are the staff moves realistic?**
-They are assumptions: move a registration clerk to pharmacy, send the float nurse to laboratory sample-taking, open the reserve room with the on-call doctor, open a third registration desk with a float clerk, and fast-track repeat prescriptions. A hospital would replace this list with its own. The tool only picks from the list.
+They are our assumptions. There are five: move a registration clerk to pharmacy, send the float nurse to laboratory sample-taking, open the reserve room with the on-call doctor, open a third registration desk with a float clerk, and fast-track repeat prescriptions. A hospital would replace this list with its own, and the tool only ever picks from the list.
 
 **What are the limits?**
-Patients never leave the queue in the simulation, a moved staff member works at full speed at once, and half the test days carry an injected disruption, so a real clinic's mix of good and bad days will differ.
+Three main ones. In the simulation, patients never give up and leave the queue. A staff member who is moved works at full speed straight away. And half the test days have a problem injected, so a real clinic, with a different mix of good and bad days, would see different numbers.
 
 **What would a pilot need?**
-A timestamped event-log export from the hospital's queue or records system, and its own list of allowed staff moves.
+Two things from the hospital: a timestamped event-log export from its queue or records system, and its own list of allowed staff moves.
 
 **Could this work outside a hospital?**
-The approach carries over to any service with stations and queues. Stations, staffing, service times and allowed moves are settings in one file. The route people take between stations is written into the simulator for a clinic, so another sector would need that part adapted.
+The approach would, for any service with stations and queues. Stations, staffing, service times and allowed moves are all settings in one file. The route people take between stations is built into the simulator for a clinic, so that part would need adapting for another sector.
